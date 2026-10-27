@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cotizador Megamoto</title>
+<meta name="theme-color" content="#14161a">
+<style>
+:root{--bg:#f5f5f2;--card:#fff;--ink:#1b1d21;--mute:#6b7078;--line:#e2e2dc;--acc:#c8102e;--acc2:#1d6b45;--chip:#efefe9}
+@media (prefers-color-scheme:dark){:root{--bg:#14161a;--card:#1d2026;--ink:#eceae4;--mute:#9aa0a8;--line:#2c3038;--acc:#ff4d5e;--acc2:#4cc38a;--chip:#262a31}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:16px}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:4px 0 14px}
+h1{font-size:20px;margin:0;letter-spacing:-.01em}
+h1 b{color:var(--acc)}
+.fecha{font-size:12px;color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+label.t{display:block;font-size:12px;font-weight:600;color:var(--mute);text-transform:uppercase;letter-spacing:.04em;margin:0 0 6px}
+input[type=text],input[type=number],select{width:100%;font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.list{max-height:220px;overflow:auto;margin-top:6px;border:1px solid var(--line);border-radius:10px;display:none}
+.list div{padding:9px 12px;border-bottom:1px solid var(--line);cursor:pointer}
+.list div:last-child{border-bottom:0}
+.list div:hover,.list div.on{background:var(--chip)}
+.list small{color:var(--mute)}
+.sel{margin-top:8px;font-weight:600}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button,.chk{font:inherit;font-size:14px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px;user-select:none}
+.seg button.on{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.chk input{margin:0;accent-color:var(--acc)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left;white-space:normal}
+.tw{overflow-x:auto;margin:0 -4px}
+@media(max-width:520px){table{font-size:13px}th,td{padding:7px 4px}}
+th{font-size:12px;color:var(--mute);font-weight:600}
+.tag{font-size:11px;padding:2px 7px;border-radius:999px;background:var(--acc2);color:#fff;margin-left:6px;vertical-align:middle}
+.muted{color:var(--mute);font-size:13px}
+textarea{width:100%;min-height:200px;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical}
+.btn{font:inherit;font-weight:600;padding:12px 16px;border-radius:12px;border:0;background:var(--acc);color:#fff;cursor:pointer;width:100%;margin-top:8px}
+.ok{background:var(--acc2)}
+.gap{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1>Cotizador <b>Megamoto</b></h1><span class="fecha" id="fecha"></span></header>
+
+  <div class="card">
+    <label class="t" for="q">Moto</label>
+    <input id="q" type="text" placeholder="Buscar: trk 502, dr, orbit..." autocomplete="off">
+    <div class="list" id="list"></div>
+    <div class="sel" id="sel"></div>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <div>
+        <label class="t">Zona</label>
+        <div class="seg" id="zona"><button data-v="amba" class="on">AMBA</button><button data-v="int">Interior</button></div>
+      </div>
+      <div>
+        <label class="t" for="ant">Anticipo en efectivo (opcional)</label>
+        <input id="ant" type="number" inputmode="numeric" placeholder="Ej: 1800000">
+      </div>
+    </div>
+    <label class="t" style="margin-top:12px">Incluir en el mensaje</label>
+    <div class="gap" id="opts">
+      <label class="chk"><input type="checkbox" data-o="contado" checked>Contado</label>
+      <label class="chk"><input type="checkbox" data-o="tarjeta" checked>Tarjeta</label>
+      <label class="chk"><input type="checkbox" data-o="prendario" checked>Prendario</label>
+      <label class="chk"><input type="checkbox" data-o="anticipo" checked>Anticipo + tarjeta</label>
+    </div>
+    <label class="t" style="margin-top:12px">Cuotas a mostrar</label>
+    <div class="gap" id="cuotas"></div>
+  </div>
+
+  <div class="card" id="res"><p class="muted">Elegí una moto para ver los números.</p></div>
+
+  <div class="card">
+    <label class="t" for="txt">Mensaje para WhatsApp</label>
+    <textarea id="txt" readonly></textarea>
+    <button class="btn" id="copy">Copiar mensaje</button>
+  </div>
+  <p class="muted">Precios de la planilla. Tarjeta: (lista + patente) x recargo / cuotas (interior: sobre lista). Anticipo + tarjeta: (contado - anticipo) x 1,07 x recargo / cuotas. Verificá siempre antes de cerrar.</p>
+</div>
+<script>
+const DATA = /*__DATA__*/null;
+const REC = {3:1.05,6:1.10,9:1.15,12:1.20,18:1.35,24:1.50};
+const st = {moto:null, zona:'amba', cuotas:new Set([6,12,24])};
+const $ = s=>document.querySelector(s);
+const fmt = n=>'$'+Math.round(n).toLocaleString('es-AR');
+const norm = s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');
+const nombre = m=>{const marca={Sym:'SYM',IKA:'IKA',TVS:'TVS'}[m.marca]||m.marca;return marca+' '+m.modelo.replace(/\s+/g,' ').trim()};
+$('#fecha').textContent='Precios al '+DATA.fecha;
+
+const promoVig = new Date()<=new Date(DATA.promo.vence+'T23:59:59');
+function contado(m){
+  const pa=DATA.promo.patenteAparte[m.modelo], pf=DATA.promo.patentadoFinal[m.modelo];
+  if(promoVig&&pa) return {amba:pa+m.pat, int:pa, promo:true};
+  if(promoVig&&pf) return {amba:pf, int:m.pvp, promo:true, runa:true};
+  return {amba:m.gba, int:m.pvp, promo:false};
+}
+
+// cuotas chips
+const cq=$('#cuotas');
+Object.keys(REC).forEach(n=>{const l=document.createElement('label');l.className='chk';l.innerHTML=`<input type="checkbox" ${st.cuotas.has(+n)?'checked':''}>${n}`;l.querySelector('input').onchange=e=>{e.target.checked?st.cuotas.add(+n):st.cuotas.delete(+n);render()};cq.appendChild(l)});
+
+// buscador
+const q=$('#q'), list=$('#list');
+function showList(){
+  const t=norm(q.value);
+  const hits=DATA.motos.filter(m=>!t||norm(m.marca+m.modelo).includes(t)).slice(0,40);
+  list.innerHTML=hits.map((m,i)=>`<div data-i="${DATA.motos.indexOf(m)}">${m.modelo} <small>${m.marca}</small></div>`).join('')||'<div class="muted">Sin resultados</div>';
+  list.style.display='block';
+}
+q.oninput=showList; q.onfocus=showList;
+list.onclick=e=>{const d=e.target.closest('[data-i]');if(!d)return;st.moto=DATA.motos[+d.dataset.i];q.value='';list.style.display='none';$('#sel').textContent=nombre(st.moto);render()};
+document.addEventListener('click',e=>{if(!e.target.closest('.card'))list.style.display='none'});
+
+$('#zona').onclick=e=>{const b=e.target.closest('button');if(!b)return;st.zona=b.dataset.v;[...$('#zona').children].forEach(x=>x.classList.toggle('on',x===b));render()};
+$('#ant').oninput=render;
+$('#opts').onchange=render;
+
+function render(){
+  const m=st.moto; if(!m) return;
+  const amba=st.zona==='amba';
+  const c=contado(m);
+  const precioContado=amba?c.amba:c.int;
+  const baseTarjeta=amba?m.listaPat:m.lista;
+  const cuotas=[...st.cuotas].sort((a,b)=>a-b);
+  const ant=+($('#ant').value||0);
+  const on=o=>$(`#opts [data-o="${o}"]`).checked;
+
+  let h=`<label class="t">Números</label><div class="tw"><table><tr><th>Opción</th><th>Cuota</th><th>Total</th></tr>`;
+  h+=`<tr><td>Contado ${amba?'patentada':'sin patentar'}${c.promo?'<span class="tag">promo</span>':''}</td><td>-</td><td>${fmt(precioContado)}</td></tr>`;
+  cuotas.forEach(n=>{const tot=baseTarjeta*REC[n];h+=`<tr><td>Tarjeta ${n} cuotas</td><td>${fmt(tot/n)}</td><td>${fmt(tot)}</td></tr>`});
+  if(m.prenAnt) h+=`<tr><td>Prendario (anticipo ${fmt(m.prenAnt)})</td><td>${fmt(m.prenCuota)}</td><td>${fmt(m.prenAnt+12*m.prenCuota)}</td></tr>`;
+  else h+=`<tr><td colspan="3" class="muted">Sin plan prendario cargado para esta moto</td></tr>`;
+  const baseAnt=amba?m.gba:m.pvp;
+  if(ant>0&&ant<baseAnt){cuotas.forEach(n=>{const tot=(baseAnt-ant)*1.07*REC[n];h+=`<tr><td>Anticipo ${fmt(ant)} + ${n} cuotas</td><td>${fmt(tot/n)}</td><td>${fmt(tot+ant)}</td></tr>`})}
+  h+=`</table></div>`;
+  if(c.runa) h+=`<p class="muted">Promo patentada por RUNA (patente de provincia).</p>`;
+  $('#res').innerHTML=h;
+
+  // mensaje
+  const nm=nombre(m); const L=[];
+  if(on('contado')){
+    let s= amba?`La ${nm} de contado, patentada, te queda en ${fmt(precioContado)}`:`La ${nm} de contado te queda en ${fmt(precioContado)} sin patentar, con los formularios para que la patentes alla`;
+    if(c.promo) s+=` (${DATA.promo.nota})`;
+    L.push(s+'.');
+  }
+  if(on('tarjeta')&&cuotas.length){
+    L.push(`Con tarjeta de credito${amba?', patentada':''}:\n`+cuotas.map(n=>`*${n} cuotas de ${fmt(baseTarjeta*REC[n]/n)}*`).join('\n'));
+  }
+  if(on('prendario')&&m.prenAnt){
+    L.push(`Con el credito prendario de Banco Patagonia: anticipo de ${fmt(m.prenAnt)} y\n*12 cuotas fijas de ${fmt(m.prenCuota)}*\ncon todos los gastos de patentamiento incluidos.`);
+  }
+  if(on('anticipo')&&ant>0&&ant<baseAnt&&cuotas.length){
+    L.push(`Con ${fmt(ant)} de anticipo, el resto con tarjeta de credito:\n`+cuotas.map(n=>`*${n} cuotas de ${fmt((baseAnt-ant)*1.07*REC[n]/n)}*`).join('\n'));
+  }
+  $('#txt').value=L.join('\n\n');
+}
+$('#copy').onclick=async()=>{const t=$('#txt').value;if(!t)return;try{await navigator.clipboard.writeText(t)}catch(e){$('#txt').select();document.execCommand('copy')}const b=$('#copy');b.textContent='Copiado';b.classList.add('ok');setTimeout(()=>{b.textContent='Copiar mensaje';b.classList.remove('ok')},1500)};
+</script>
+</body>
+</html>

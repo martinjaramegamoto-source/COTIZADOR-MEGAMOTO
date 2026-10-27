@@ -1,0 +1,30 @@
+{
+  "vence": "2026-10-31",
+  "nota": "promo de fin de mes, solo efectivo o transferencia",
+  "patenteAparte": {
+    "350R NEW": 9015000,
+    "400X": 9675000,
+    "BLITZ PLUS": 1735000,
+    "MAX 110": 1632767,
+    "VICTORY 150": 1655434,
+    "SKUA 125 X-TREME": 2150000,
+    "XMM 250 1.9": 3934210,
+    "TRK 502": 11777998,
+    "TRK 502 X": 13909505,
+    "TRK 702": 14212546,
+    "TRK 702 X": 15935796,
+    "N 300": 5845000,
+    "M 502 N": 8860101,
+    "MAXSYM TL 508": 16800000,
+    "RTR 160": 3743391,
+    "RTR 200": 4074599,
+    "RTR 160 ABS": 4453393,
+    "RTR 200 EFI": 4740000
+  },
+  "patentadoFinal": {
+    "BLITZ ONE START": 1400000,
+    "BLITZ ONE FULL": 1690000,
+    "Slalom 110 BASE": 1370000,
+    "Slalom 110 FULL": 1490000
+  }
+}
