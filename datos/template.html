@@ -104,7 +104,7 @@ tr.pick td{background:color-mix(in srgb,#ffd400 40%,transparent)}
     <textarea id="txt" readonly></textarea>
     <button class="btn" id="copy">Copiar mensaje</button>
   </div>
-  <p class="muted">Precios de la planilla. Tarjeta: (lista + patente) x recargo / cuotas (interior: sobre lista). Anticipo + tarjeta: (contado - anticipo) x 1,07 x recargo / cuotas. Cupo necesario = total que se carga a la tarjeta. Verificá siempre antes de cerrar.</p>
+  <p class="muted">Precios de la planilla. Tarjeta: (lista + patente) x recargo / cuotas (interior: sobre lista). Anticipo + tarjeta: (contado - anticipo) x 1,07 x recargo / cuotas. Cupo necesario = total que se carga a la tarjeta. Costo total = anticipo + todo lo que se paga en cuotas. Verificá siempre antes de cerrar.</p>
 </div>
 <script>
 const DATA = /*__DATA__*/null;
@@ -190,11 +190,11 @@ function render(){
   const cuotas=[...st.cuotas].sort((a,b)=>a-b);
   const on=o=>$(`#opts [data-o="${o}"]`).checked;
 
-  let h=`<label class="t">Números</label><div class="tw"><table><tr><th>Opción</th><th>Cuota</th><th>Cupo necesario</th></tr>`;
-  h+=`<tr><td>Contado ${amba?'patentada':'sin patentar'}${c.promo?'<span class="tag">promo</span>':''}</td><td>-</td><td>${fmt(precioContado)}</td></tr>`;
-  cuotas.forEach(n=>{const p=plan(m,0,n);h+=`<tr><td>Tarjeta ${n} cuotas</td><td>${fmt(p.cuota)}</td><td>${fmt(p.cupo)}</td></tr>`});
-  if(m.prenAnt) h+=`<tr><td>Prendario Banco Patagonia: anticipo ${fmt(m.prenAnt)} + 12 cuotas fijas</td><td>${fmt(m.prenCuota)}</td><td>-</td></tr>`;
-  else h+=`<tr><td colspan="3" class="muted">Sin plan prendario cargado para esta moto</td></tr>`;
+  let h=`<label class="t">Números</label><div class="tw"><table><tr><th>Opción</th><th>Cuota</th><th>Cupo necesario</th><th>Costo total</th></tr>`;
+  h+=`<tr><td>Contado ${amba?'patentada':'sin patentar'}${c.promo?'<span class="tag">promo</span>':''}</td><td>-</td><td>-</td><td>${fmt(precioContado)}</td></tr>`;
+  cuotas.forEach(n=>{const p=plan(m,0,n);h+=`<tr><td>Tarjeta ${n} cuotas</td><td>${fmt(p.cuota)}</td><td>${fmt(p.cupo)}</td><td>${fmt(p.cupo)}</td></tr>`});
+  if(m.prenAnt) h+=`<tr><td>Prendario Banco Patagonia: anticipo ${fmt(m.prenAnt)} + 12 cuotas fijas</td><td>${fmt(m.prenCuota)}</td><td>-</td><td><b>${fmt(m.prenAnt+12*m.prenCuota)}</b></td></tr>`;
+  else h+=`<tr><td colspan="4" class="muted">Sin plan prendario cargado para esta moto</td></tr>`;
   h+=`</table></div>`;
   if(c.runa) h+=`<p class="muted">Promo patentada por RUNA (patente de provincia).</p>`;
   $('#res').innerHTML=h;
@@ -208,10 +208,11 @@ function render(){
   } else if(!v) hint=st.modo==='cupo'?'Poné el cupo que tiene disponible y te digo cuánto anticipo necesita en cada plan.':'Poné la cuota que quiere pagar y te digo cuánto anticipo necesita en cada plan.';
   else hint='Anticipo redondeado para arriba a $10.000. "Sin anticipo" = le alcanza pagándola toda con la tarjeta.';
   $('#simhint').textContent=hint;
-  let t=`<tr><th>Cuotas</th>${conAnt?'<th>Anticipo</th>':''}<th>Valor cuota</th><th>Cupo necesario</th></tr>`;
+  const conTot=conAnt||v>0;
+  let t=`<tr><th>Cuotas</th>${conAnt?'<th>Anticipo</th>':''}<th>Valor cuota</th><th>Cupo necesario</th>${conTot?'<th>Costo total</th>':''}</tr>`;
   rows.forEach((r,i)=>{const n=PLAZOS[i];
-    t+=r?`<tr data-n="${n}" class="${n===st.pick?'pick':''}"><td><b>${n} cuotas</b></td>${conAnt?`<td>${r.ant?fmt(r.ant):'Sin anticipo'}</td>`:''}<td>${fmt(r.cuota)}</td><td>${fmt(r.cupo)}</td></tr>`
-         :`<tr data-n="${n}"><td><b>${n} cuotas</b></td><td colspan="${conAnt?3:2}" class="muted">-</td></tr>`});
+    t+=r?`<tr data-n="${n}" class="${n===st.pick?'pick':''}"><td><b>${n} cuotas</b></td>${conAnt?`<td>${r.ant?fmt(r.ant):'Sin anticipo'}</td>`:''}<td>${fmt(r.cuota)}</td><td>${fmt(r.cupo)}</td>${conTot?`<td><b>${fmt(r.ant+r.cupo)}</b></td>`:''}</tr>`
+         :`<tr data-n="${n}"><td><b>${n} cuotas</b></td><td colspan="${(conAnt?3:2)+(conTot?1:0)}" class="muted">-</td></tr>`});
   $('#simt').innerHTML=t;
   dibujar(m,rows,v);
 
@@ -226,10 +227,10 @@ function render(){
     L.push(`Con tarjeta de credito${amba?', patentada':''}:\n`+cuotas.map(n=>{const p=plan(m,0,n);return `*${n} cuotas de ${fmt(p.cuota)}* (cupo necesario ${fmt(p.cupo)})`}).join('\n'));
   }
   if(on('prendario')&&m.prenAnt){
-    L.push(`Con el credito prendario de Banco Patagonia: anticipo de ${fmt(m.prenAnt)} y\n*12 cuotas fijas de ${fmt(m.prenCuota)}*\ncon todos los gastos de patentamiento incluidos.`);
+    L.push(`Con el credito prendario de Banco Patagonia: anticipo de ${fmt(m.prenAnt)} y\n*12 cuotas fijas de ${fmt(m.prenCuota)}*\ncon todos los gastos de patentamiento incluidos (costo total ${fmt(m.prenAnt+12*m.prenCuota)}).`);
   }
   if(on('anticipo')&&st.modo==='ant'&&v>0&&v<b.contado&&cuotas.length){
-    L.push(`Con ${fmt(v)} de anticipo, el resto con tarjeta de credito:\n`+cuotas.map(n=>{const p=plan(m,v,n);return `*${n} cuotas de ${fmt(p.cuota)}* (cupo necesario ${fmt(p.cupo)})`}).join('\n'));
+    L.push(`Con ${fmt(v)} de anticipo, el resto con tarjeta de credito:\n`+cuotas.map(n=>{const p=plan(m,v,n);return `*${n} cuotas de ${fmt(p.cuota)}* (cupo necesario ${fmt(p.cupo)}, costo total ${fmt(v+p.cupo)})`}).join('\n'));
   }
   $('#txt').value=L.join('\n\n');
 }
@@ -255,20 +256,24 @@ function dibujar(m,rows,v){
   else sub=st.modo==='cupo'?`Con ${fmt(v)} de cupo en la tarjeta`:`Para cuotas de hasta ${fmt(v)}`;
   x.fillStyle='#1b1d21';x.font='700 32px '+F;x.fillText(sub,P,222);
   // columnas
-  const cols=conAnt?[['Cuotas',P,'left'],['Anticipo',560,'right'],['Valor cuota',800,'right'],['Cupo necesario',W-P,'right']]
+  const conTot=conAnt||v>0;
+  const cols=conAnt?[['Cuotas',P,'left'],['Anticipo',440,'right'],['Valor cuota',648,'right'],['Cupo necesario',832,'right'],['Costo total',W-P,'right']]
+            :conTot?[['Cuotas',P,'left'],['Valor cuota',560,'right'],['Cupo necesario',800,'right'],['Costo total',W-P,'right']]
                    :[['Cuotas',P,'left'],['Valor cuota',640,'right'],['Cupo necesario disponible',W-P,'right']];
+  const ancho=cols.length>4, fc=ancho?30:40, fv=ancho?27:34, fk=ancho?32:40;
   let y=top+th-20;
-  x.font='600 24px '+F;x.fillStyle='#6b7078';
+  x.font='600 '+(ancho?21:24)+'px '+F;x.fillStyle='#6b7078';
   cols.forEach(([t,cx,al])=>{x.textAlign=al;x.fillText(t,cx,y)});
   x.fillStyle='#e2e2dc';x.fillRect(P,top+th-4,W-2*P,2);
   y=top+th;
   if(!vis.length){x.textAlign='left';x.fillStyle='#6b7078';x.font='500 30px '+F;x.fillText('Cargá un valor para ver las opciones',P,y+56)}
   vis.forEach(r=>{
     if(r.n===st.pick){x.fillStyle='#ffd400';x.fillRect(P-16,y+6,W-2*P+32,RH-12)}
-    x.fillStyle='#14161a';x.textAlign='left';x.font='800 40px '+F;x.fillText(r.n+' CUOTAS',P,y+58);
+    x.fillStyle='#14161a';x.textAlign='left';x.font='800 '+fc+'px '+F;x.fillText(r.n+' CUOTAS',P,y+58);
     x.font='700 36px '+F;x.textAlign='right';
-    const vals=conAnt?[r.ant?fmt(r.ant):'Sin anticipo',fmt(r.cuota),fmt(r.cupo)]:[fmt(r.cuota),fmt(r.cupo)];
-    vals.forEach((t,i)=>{x.font=(i===vals.length-2?'800 40px ':'600 34px ')+F;x.fillText(t,cols[i+1][1],y+58)});
+    const vals=(conAnt?[r.ant?fmt(r.ant):'Sin anticipo']:[]).concat([fmt(r.cuota),fmt(r.cupo)]).concat(conTot?[fmt(r.ant+r.cupo)]:[]);
+    const iq=conAnt?1:0;
+    vals.forEach((t,i)=>{x.font=(i===iq?'800 '+fk+'px ':'600 '+fv+'px ')+F;x.fillText(t,cols[i+1][1],y+58)});
     y+=RH;
   });
   // pie
