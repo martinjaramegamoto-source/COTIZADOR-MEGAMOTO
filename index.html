@@ -193,7 +193,7 @@ function render(){
   let h=`<label class="t">Números</label><div class="tw"><table><tr><th>Opción</th><th>Cuota</th><th>Cupo necesario</th></tr>`;
   h+=`<tr><td>Contado ${amba?'patentada':'sin patentar'}${c.promo?'<span class="tag">promo</span>':''}</td><td>-</td><td>${fmt(precioContado)}</td></tr>`;
   cuotas.forEach(n=>{const p=plan(m,0,n);h+=`<tr><td>Tarjeta ${n} cuotas</td><td>${fmt(p.cuota)}</td><td>${fmt(p.cupo)}</td></tr>`});
-  if(m.prenAnt) h+=`<tr><td>Prendario (anticipo ${fmt(m.prenAnt)})</td><td>${fmt(m.prenCuota)}</td><td>-</td></tr>`;
+  if(m.prenAnt) h+=`<tr><td>Prendario Banco Patagonia: anticipo ${fmt(m.prenAnt)} + 12 cuotas fijas</td><td>${fmt(m.prenCuota)}</td><td>-</td></tr>`;
   else h+=`<tr><td colspan="3" class="muted">Sin plan prendario cargado para esta moto</td></tr>`;
   h+=`</table></div>`;
   if(c.runa) h+=`<p class="muted">Promo patentada por RUNA (patente de provincia).</p>`;
