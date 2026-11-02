@@ -121,9 +121,9 @@ $('#fecha').textContent='Precios al '+DATA.fecha;
 
 const promoVig = new Date()<=new Date(DATA.promo.vence+'T23:59:59');
 function contado(m){
-  const pa=DATA.promo.patenteAparte[m.modelo], pf=DATA.promo.patentadoFinal[m.modelo];
-  if(promoVig&&pa) return {amba:pa+m.pat, int:pa, promo:true};
-  if(promoVig&&pf) return {amba:pf, int:m.pvp, promo:true, runa:true};
+  // promo: [precio solo moto, patentamiento]. AMBA = moto + patente; interior / solo moto = moto.
+  const pr=(DATA.promo.motos||{})[m.modelo];
+  if(promoVig&&pr) return {amba:pr[0]+pr[1], int:pr[0], promo:true};
   return {amba:m.gba, int:m.pvp, promo:false};
 }
 
@@ -196,7 +196,7 @@ function render(){
   if(m.prenAnt) h+=`<tr><td>Prendario Banco Patagonia: anticipo ${fmt(m.prenAnt)} + 12 cuotas fijas</td><td>${fmt(m.prenCuota)}</td><td>-</td><td><b>${fmt(m.prenAnt+12*m.prenCuota)}</b></td></tr>`;
   else h+=`<tr><td colspan="4" class="muted">Sin plan prendario cargado para esta moto</td></tr>`;
   h+=`</table></div>`;
-  if(c.runa) h+=`<p class="muted">Promo patentada por RUNA (patente de provincia).</p>`;
+  if(c.promo) h+=`<p class="muted">Promo de contado (efectivo, transferencia o 1 pago con tarjeta) hasta el ${DATA.promo.vence.split('-').reverse().join('/')}. Facturación: preguntar. Las cuotas usan la lista normal.</p>`;
   $('#res').innerHTML=h;
 
   // simulador
