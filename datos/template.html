@@ -65,7 +65,7 @@ tr.pick td{background:color-mix(in srgb,#ffd400 40%,transparent)}
     <div>
       <div>
         <label class="t">Zona</label>
-        <div class="seg" id="zona"><button data-v="amba" class="on">AMBA</button><button data-v="int">Interior</button></div>
+        <div class="seg" id="zona"><button data-v="amba" class="on">GBA</button><button data-v="caba">CABA</button><button data-v="int">Interior</button></div>
       </div>
     </div>
     <label class="t" style="margin-top:12px">Incluir en el mensaje</label>
@@ -123,13 +123,17 @@ const promoVig = new Date()<=new Date(DATA.promo.vence+'T23:59:59');
 function contado(m){
   // promo: [precio solo moto, patentamiento]. AMBA = moto + patente; interior / solo moto = moto.
   const pr=(DATA.promo.motos||{})[m.modelo];
-  if(promoVig&&pr) return {amba:pr[0]+pr[1], int:pr[0], promo:true};
-  return {amba:m.gba, int:m.pvp, promo:false};
+  if(promoVig&&pr) return {amba:pr[0]+pr[1], caba:pr[0]+pr[1]+((m.caba||m.gba)-m.gba), int:pr[0], promo:true};
+  return {amba:m.gba, caba:m.caba||m.gba, int:m.pvp, promo:false};
 }
 
 // ---------- calculo tarjeta ----------
 // sin anticipo: (lista + patente) x recargo. Con anticipo: (contado - anticipo) x 1,07 x recargo.
-function bases(m){const amba=st.zona==='amba';return {amba, contado:amba?m.gba:m.pvp, lista:amba?m.listaPat:m.lista}}
+function bases(m){
+  const z=st.zona, pat=z!=='int', caba=z==='caba';
+  return {amba:pat, caba, contado:caba?(m.caba||m.gba):pat?m.gba:m.pvp, lista:caba?(m.listaPatCaba||m.listaPat):pat?m.listaPat:m.lista,
+          prenAnt:caba&&m.prenAntCaba?m.prenAntCaba:m.prenAnt};
+}
 function plan(m,ant,n){const b=bases(m);const fin=ant>0?(b.contado-ant)*1.07:b.lista;const cupo=fin*REC[n];return {n,ant,fin,cuota:cupo/n,cupo}}
 function simRows(m){
   const v=num($('#val').value), b=bases(m);
@@ -186,14 +190,15 @@ function render(){
   const m=st.moto; if(!m) return;
   const b=bases(m), amba=b.amba;
   const c=contado(m);
-  const precioContado=amba?c.amba:c.int;
+  const precioContado=b.caba?c.caba:amba?c.amba:c.int;
+  const pAnt=b.prenAnt;
   const cuotas=[...st.cuotas].sort((a,b)=>a-b);
   const on=o=>$(`#opts [data-o="${o}"]`).checked;
 
   let h=`<label class="t">Números</label><div class="tw"><table><tr><th>Opción</th><th>Cuota</th><th>Cupo necesario</th><th>Costo total</th></tr>`;
-  h+=`<tr><td>Contado ${amba?'patentada':'sin patentar'}${c.promo?'<span class="tag">promo</span>':''}</td><td>-</td><td>-</td><td>${fmt(precioContado)}</td></tr>`;
+  h+=`<tr><td>Contado ${b.caba?'patentada en CABA':amba?'patentada en GBA':'sin patentar'}${c.promo?'<span class="tag">promo</span>':''}</td><td>-</td><td>-</td><td>${fmt(precioContado)}</td></tr>`;
   cuotas.forEach(n=>{const p=plan(m,0,n);h+=`<tr><td>Tarjeta ${n} cuotas</td><td>${fmt(p.cuota)}</td><td>${fmt(p.cupo)}</td><td>${fmt(p.cupo)}</td></tr>`});
-  if(m.prenAnt) h+=`<tr><td>Prendario Banco Patagonia: anticipo ${fmt(m.prenAnt)} + 12 cuotas fijas</td><td>${fmt(m.prenCuota)}</td><td>-</td><td><b>${fmt(m.prenAnt+12*m.prenCuota)}</b></td></tr>`;
+  if(m.prenAnt) h+=`<tr><td>Prendario Banco Patagonia${b.caba?' (CABA)':''}: anticipo ${fmt(pAnt)} + 12 cuotas fijas</td><td>${fmt(m.prenCuota)}</td><td>-</td><td><b>${fmt(pAnt+12*m.prenCuota)}</b></td></tr>`;
   else h+=`<tr><td colspan="4" class="muted">Sin plan prendario cargado para esta moto</td></tr>`;
   h+=`</table></div>`;
   if(c.promo) h+=`<p class="muted">Promo de contado (efectivo, transferencia o 1 pago con tarjeta) hasta el ${DATA.promo.vence.split('-').reverse().join('/')}. Facturación: preguntar. Las cuotas usan la lista normal.</p>`;
@@ -219,15 +224,15 @@ function render(){
   // mensaje
   const nm=nombre(m); const L=[];
   if(on('contado')){
-    let s= amba?`La ${nm} de contado, patentada, te queda en ${fmt(precioContado)}`:`La ${nm} de contado te queda en ${fmt(precioContado)} sin patentar, con los formularios para que la patentes alla`;
+    let s= amba?`La ${nm} de contado, patentada${b.caba?' en CABA':''}, te queda en ${fmt(precioContado)}`:`La ${nm} de contado te queda en ${fmt(precioContado)} sin patentar, con los formularios para que la patentes alla`;
     if(c.promo) s+=` (${DATA.promo.nota})`;
     L.push(s+'.');
   }
   if(on('tarjeta')&&cuotas.length){
-    L.push(`Con tarjeta de credito${amba?', patentada':''}:\n`+cuotas.map(n=>{const p=plan(m,0,n);return `*${n} cuotas de ${fmt(p.cuota)}* (cupo necesario ${fmt(p.cupo)})`}).join('\n'));
+    L.push(`Con tarjeta de credito${b.caba?', patentada en CABA':amba?', patentada':''}:\n`+cuotas.map(n=>{const p=plan(m,0,n);return `*${n} cuotas de ${fmt(p.cuota)}* (cupo necesario ${fmt(p.cupo)})`}).join('\n'));
   }
   if(on('prendario')&&m.prenAnt){
-    L.push(`Con el credito prendario de Banco Patagonia: anticipo de ${fmt(m.prenAnt)} y\n*12 cuotas fijas de ${fmt(m.prenCuota)}*\ncon todos los gastos de patentamiento incluidos (costo total ${fmt(m.prenAnt+12*m.prenCuota)}).`);
+    L.push(`Con el credito prendario de Banco Patagonia: anticipo de ${fmt(pAnt)} y\n*12 cuotas fijas de ${fmt(m.prenCuota)}*\ncon todos los gastos de patentamiento incluidos (costo total ${fmt(pAnt+12*m.prenCuota)}).`);
   }
   if(on('anticipo')&&st.modo==='ant'&&v>0&&v<b.contado&&cuotas.length){
     L.push(`Con ${fmt(v)} de anticipo, el resto con tarjeta de credito:\n`+cuotas.map(n=>{const p=plan(m,v,n);return `*${n} cuotas de ${fmt(p.cuota)}* (cupo necesario ${fmt(p.cupo)}, costo total ${fmt(v+p.cupo)})`}).join('\n'));
@@ -279,7 +284,7 @@ function dibujar(m,rows,v){
   // pie
   x.textAlign='left';x.fillStyle='#e2e2dc';x.fillRect(P,y+16,W-2*P,2);
   x.fillStyle='#c8102e';x.font='800 28px '+F;x.fillText('TARJETA DE CRÉDITO BANCARIA',P,y+66);
-  x.fillStyle='#1b1d21';x.font='600 26px '+F;x.fillText(b.amba?'Incluye patentamiento en Gran Buenos Aires':'Sin patentar, con los formularios para patentar en tu provincia',P,y+106);
+  x.fillStyle='#1b1d21';x.font='600 26px '+F;x.fillText(b.caba?'Incluye patentamiento en CABA':b.amba?'Incluye patentamiento en Gran Buenos Aires':'Sin patentar, con los formularios para patentar en tu provincia',P,y+106);
   x.fillStyle='#6b7078';x.font='500 22px '+F;x.fillText('Cotización del '+new Date().toLocaleDateString('es-AR')+'. Valores sujetos a modificación.',P,y+144);
   x.textAlign='right';x.fillStyle='#14161a';x.font='800 30px '+F;x.fillText(ASESOR.nombre+' · '+ASESOR.tel,W-P,y+66);
 }
