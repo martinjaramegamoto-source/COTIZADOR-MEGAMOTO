@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Catálogo 0km · Megamoto Tigre</title>
+<meta name="description" content="Motos 0km de Kove, Suzuki, Benelli, Morbidelli, Keeway, SYM, Malaguti, Motomel, TVS e IKA. Entrega inmediata y financiación.">
+<meta property="og:title" content="Catálogo 0km · Megamoto Tigre">
+<meta property="og:description" content="Todas las marcas que trabajamos, con fichas técnicas. Consultá por WhatsApp.">
+<style>
+:root{--bg:#f4f4f2;--card:#fff;--ink:#16161a;--mut:#6b6b73;--line:#e4e4e0;--acc:#d6261c;--acc2:#b51e15;--wa:#1fa855}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+header{background:var(--ink);color:#fff;padding:22px 20px 18px}
+.wrap{max-width:1200px;margin:0 auto}
+.brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.brand b{font-size:24px;letter-spacing:.5px}
+.brand b span{color:var(--acc)}
+.brand small{color:#b9b9c0;font-size:14px}
+.hero{margin:8px 0 0;color:#d9d9de;font-size:15px;max-width:640px}
+.bar{position:sticky;top:0;z-index:5;background:rgba(244,244,242,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:12px 20px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row+.row{margin-top:8px}
+input[type=search],select{font:inherit;font-size:15px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+input[type=search]{flex:1;min-width:180px}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer;color:var(--ink);white-space:nowrap}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.count{color:var(--mut);font-size:14px;margin:14px 20px 0}
+main{padding:10px 20px 40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.card{background:var(--card);border-radius:14px;overflow:hidden;border:1px solid var(--line);cursor:pointer;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.ph{aspect-ratio:4/3;background:#fafaf8;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:contain;padding:8px}
+.ph .none{font-size:15px;color:var(--mut);text-align:center;padding:20px}
+.ph .none b{display:block;font-size:30px;color:#cfcfca;margin-bottom:4px}
+.info{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px;flex:1}
+.mk{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--acc);font-weight:600}
+.nm{font-size:18px;font-weight:650}
+.kv{font-size:13.5px;color:var(--mut)}
+.more{margin-top:auto;padding-top:8px;font-size:14px;color:var(--ink);font-weight:600}
+.empty{text-align:center;color:var(--mut);padding:50px 0}
+dialog{border:0;border-radius:18px;padding:0;max-width:760px;width:calc(100% - 24px);max-height:calc(100% - 24px)}
+dialog::backdrop{background:rgba(10,10,12,.55)}
+.dl{display:grid;grid-template-columns:1fr 1fr}
+.dl .ph{aspect-ratio:auto;min-height:260px;height:100%}
+.dl .body{padding:22px 22px 18px}
+.x{position:absolute;top:10px;right:12px;border:0;background:#fff;border-radius:50%;width:36px;height:36px;font-size:22px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+table{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:14px}
+td{padding:6px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{color:var(--mut);width:42%;padding-right:10px}
+.ex{font-size:14px;margin:10px 0 0;line-height:1.45}
+.acts{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:10px;padding:11px 16px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none}
+.wa{background:var(--wa);color:#fff}
+.sec{background:#efefec;color:var(--ink)}
+.note{font-size:12px;color:var(--mut);margin-top:12px}
+footer{text-align:center;color:var(--mut);font-size:13px;padding:10px 20px 40px;line-height:1.6}
+.fab{position:fixed;right:16px;bottom:16px;z-index:6;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 14px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+@media (max-width:640px){.dl{grid-template-columns:1fr}.dl .ph{min-height:220px}.grid{grid-template-columns:repeat(2,1fr);gap:10px}.nm{font-size:16px}.info{padding:10px}.kv{font-size:12.5px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand"><b>MEGAMOTO <span>TIGRE</span></b><small>Concesionario oficial multimarca · 0km</small></div>
+  <p class="hero">Todas las motos que trabajamos, con su ficha técnica. Tocá la que te guste y consultanos precio, colores y financiación por WhatsApp.</p>
+</div></header>
+
+<div class="bar"><div class="wrap">
+  <div class="row">
+    <input type="search" id="q" placeholder="Buscar modelo (ej. V-Strom, Blitz, 800X)" autocomplete="off">
+    <select id="cc" aria-label="Cilindrada">
+      <option value="">Todas las cilindradas</option>
+      <option value="0-125">Hasta 125 cc</option>
+      <option value="126-250">126 a 250 cc</option>
+      <option value="251-500">251 a 500 cc</option>
+      <option value="501-9999">Más de 500 cc</option>
+    </select>
+  </div>
+  <div class="row chips" id="marcas"></div>
+  <div class="row chips" id="tipos"></div>
+</div></div>
+
+<div class="wrap"><div class="count" id="count"></div></div>
+<main><div class="wrap"><div class="grid" id="grid"></div><div class="empty" id="empty" hidden>No encontramos motos con esos filtros.</div></div></main>
+
+<footer><div class="wrap">
+  Megamoto · Tigre, Buenos Aires · Entrega inmediata y opciones de financiación.<br>
+  Fotos y datos técnicos tomados de los sitios oficiales de cada marca; pueden variar según versión y año. Consultá disponibilidad y colores.
+</div></footer>
+
+<a class="btn wa fab" id="fab" target="_blank" rel="noopener">WhatsApp</a>
+
+<dialog id="dlg"><button class="x" onclick="cerrar()" aria-label="Cerrar">×</button><div id="dlgc"></div></dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+/*DATA*/
+const WA='5491139529060';
+const $=s=>document.querySelector(s);
+const st={marca:'',tipo:'',cc:'',q:''};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tipoNom=t=>(TIPOS.find(x=>x[0]===t)||[,''])[1];
+const waLink=t=>'https://wa.me/'+WA+'?text='+encodeURIComponent(t);
+const val=(m,l)=>(m.ficha.find(f=>f[0]===l)||[,''])[1];
+
+function foto(m){
+  if(!m.img&&!m.img2) return `<div class="none"><b>${esc(m.marca)}</b>Foto a confirmar</div>`;
+  const first=m.img||m.img2, alt=m.img?m.img2:'';
+  return `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(first)}" alt="${esc(m.marca+' '+m.nombre)}" data-alt="${esc(alt)}" onerror="fb(this)">`;
+}
+function fb(im){const a=im.dataset.alt;if(a){im.dataset.alt='';im.src=a;}else{im.outerHTML='<div class="none"><b>'+esc(im.alt.split(' ')[0])+'</b>Foto a confirmar</div>';}}
+
+function chips(){
+  $('#marcas').innerHTML=['',...MARCAS].map(m=>`<button class="chip${st.marca===m?' on':''}" data-m="${esc(m)}">${m||'Todas las marcas'}</button>`).join('');
+  const usados=new Set(MOTOS.map(m=>m.tipo));
+  $('#tipos').innerHTML=[['','Todos los tipos'],...TIPOS.filter(t=>usados.has(t[0]))].map(t=>`<button class="chip${st.tipo===t[0]?' on':''}" data-t="${t[0]}">${t[1]}</button>`).join('');
+}
+function filtra(){
+  const q=st.q.trim().toLowerCase().replace(/[-\s]/g,'');
+  const [a,b]=st.cc?st.cc.split('-').map(Number):[0,1e9];
+  return MOTOS.filter(m=>(!st.marca||m.marca===st.marca)&&(!st.tipo||m.tipo===st.tipo)&&(!st.cc||(m.cc>=a&&m.cc<=b))
+    &&(!q||(m.marca+m.nombre).toLowerCase().replace(/[-\s]/g,'').includes(q)));
+}
+function render(){
+  chips();
+  const L=filtra();
+  $('#count').textContent=L.length+(L.length===1?' modelo':' modelos');
+  $('#empty').hidden=L.length>0;
+  $('#grid').innerHTML=L.map(m=>{
+    const kv=[val(m,'Cilindrada'),val(m,'Potencia'),tipoNom(m.tipo)].filter(Boolean).join(' · ');
+    return `<article class="card" data-id="${m.id}"><div class="ph">${foto(m)}</div><div class="info"><div class="mk">${esc(m.marca)}</div><div class="nm">${esc(m.nombre)}</div><div class="kv">${esc(kv)}</div><div class="more">Ver ficha →</div></div></article>`;
+  }).join('');
+  url();
+  $('#fab').href=waLink('Hola Martin! Vi el catalogo de Megamoto y queria consultar por una moto.');
+}
+function url(id){
+  const p=new URLSearchParams();
+  if(st.marca)p.set('marca',st.marca);if(st.tipo)p.set('tipo',st.tipo);if(st.cc)p.set('cc',st.cc);if(st.q)p.set('q',st.q);if(id)p.set('moto',id);
+  const s=p.toString();history.replaceState(null,'',location.pathname+(s?'?'+s:''));
+}
+function abrir(id){
+  const m=MOTOS.find(x=>x.id===id);if(!m)return;
+  const rows=m.ficha.map(f=>`<tr><td>${esc(f[0])}</td><td>${esc(f[1])}</td></tr>`).join('');
+  $('#dlgc').innerHTML=`<div class="dl"><div class="ph">${foto(m)}</div><div class="body">
+    <div class="mk">${esc(m.marca)} · ${esc(tipoNom(m.tipo))}</div><div class="nm" style="font-size:24px">${esc(m.nombre)}</div>
+    ${rows?`<table>${rows}</table>`:'<p class="ex">Pedinos la ficha técnica completa por WhatsApp.</p>'}
+    ${m.extra?`<p class="ex">${esc(m.extra)}</p>`:''}
+    <div class="acts"><a class="btn wa" target="_blank" rel="noopener" href="${waLink('Hola Martin! Vi en el catalogo la '+m.marca+' '+m.nombre+' y queria consultar precio y disponibilidad.')}">Consultar por WhatsApp</a>
+    <button class="btn sec" onclick="compartir('${m.id}')">Compartir</button></div>
+    <div class="note">Datos de fábrica orientativos. Consultá colores y disponibilidad.</div></div></div>`;
+  url(id);
+  if(!$('#dlg').open)$('#dlg').showModal();
+}
+function cerrar(){$('#dlg').close();}
+$('#dlg').addEventListener('close',()=>url());
+$('#dlg').addEventListener('click',e=>{if(e.target.id==='dlg')cerrar();});
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1800);}
+async function compartir(id){
+  const m=MOTOS.find(x=>x.id===id);const link=location.origin+location.pathname+'?moto='+id;
+  if(navigator.share){try{await navigator.share({title:m.marca+' '+m.nombre,url:link});return;}catch(e){}}
+  try{await navigator.clipboard.writeText(link);toast('Link copiado');}catch(e){prompt('Copiá el link',link);}
+}
+$('#marcas').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b){st.marca=b.dataset.m;render();}});
+$('#tipos').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b){st.tipo=b.dataset.t;render();}});
+$('#cc').addEventListener('change',e=>{st.cc=e.target.value;render();});
+$('#q').addEventListener('input',e=>{st.q=e.target.value;render();});
+$('#grid').addEventListener('click',e=>{const c=e.target.closest('.card');if(c)abrir(c.dataset.id);});
+
+const P=new URLSearchParams(location.search);
+st.marca=MARCAS.find(m=>m.toLowerCase()===(P.get('marca')||'').toLowerCase())||'';
+st.tipo=P.get('tipo')||'';st.cc=P.get('cc')||'';st.q=P.get('q')||'';
+$('#cc').value=st.cc;$('#q').value=st.q;
+render();
+if(P.get('moto'))abrir(P.get('moto'));
+</script>
+</body>
+</html>
