@@ -174,8 +174,9 @@ for marca, mod in rows:
                       tipo=cat, cc=cc, img=img, img2=propia, ficha=ficha, extra=extra))
 
 orden_marca = ['Kove', 'Suzuki', 'Benelli', 'Morbidelli', 'Keeway', 'SYM', 'Malaguti', 'Motomel', 'TVS', 'IKA', 'Benda']
-motos.sort(key=lambda m: (orden_marca.index(m['marca']) if m['marca'] in orden_marca else 99, -m['cc'], m['nombre']))
-marcas = [m for m in orden_marca if any(x['marca'] == m for x in motos)] + sorted({x['marca'] for x in motos} - set(orden_marca))
+orden_low = [x.lower() for x in orden_marca]
+motos.sort(key=lambda m: (orden_low.index(m['marca'].lower()) if m['marca'].lower() in orden_low else 99, -m['cc'], m['nombre']))
+marcas = list(dict.fromkeys(x['marca'] for x in motos))
 
 tpl = open(os.path.join(D, 'catalogo_template.html'), encoding='utf-8').read()
 out = tpl.replace('/*DATA*/', 'const MOTOS=' + json.dumps(motos, ensure_ascii=False) + ';const MARCAS=' + json.dumps(marcas, ensure_ascii=False)

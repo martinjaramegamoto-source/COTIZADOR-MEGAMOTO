@@ -1,15 +1,61 @@
-{"base":"https://www.tvsmotor.com",
- "img":{"RTR 160":"/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/Apache-Non-Branding/RTR-160-4v/overview/RTR-160-4v-Red.png",
-  "RTR 160 ABS":"/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/Apache-Non-Branding/RTR-160-4v/overview/RTR-160-4v-Red.png",
-  "RTR 200":"/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/Apache-Non-Branding/RTR-200-4V/Overview/RTR-200-4v-Overview-Image.webp",
-  "RTR 200 ABS":"/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/Apache-Non-Branding/RTR-200-4V/Overview/RTR-200-4v-Overview-Image.webp",
-  "RTR 200 EFI":"/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/apache-rtr-2004v-fi/web/home-listing/TVS-RTR-200-4V-FI-23-AZUL-3-800-600-1.webp",
-  "RAIDER 125":"/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/Raider/web/home-listing/06_Product_Display.webp",
-  "NTORQ 125":"/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/Ntorq-125/web/home-listing/ntorq_125_Home.webp",
-  "NEO 110 FULL":"/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/Non-premium/NEO-NX-Black/Web/banner_web/neo_banner.webp"},
- "spec":{"RTR 160":{"cc":"159,7","hp":"16,3 HP","nm":"14,8","peso":"143","tanque":"12","caja":"5"},
-  "RTR 200":{"cc":"197,75","tanque":"12","caja":"5"},
-  "RTR 200 EFI":{"cc":"197,75","tanque":"12","caja":"5","extra":"3 modos de manejo, suspension SHOWA regulable"},
-  "RAIDER 125":{"cc":"124,8","hp":"12,7 HP","tanque":"10","caja":"5"},
-  "NTORQ 125":{"cc":"124,8","hp":"8,8 HP","nm":"10,5","peso":"116","tanque":"5","caja":"Automatica (CVT)"},
-  "NEO 110 FULL":{"cc":"109,7","hp":"9 HP","nm":"8,5","tanque":"4","caja":"4 semiautomatica"}}}
+{
+"base": "https://www.tvsmotor.com",
+"img": {
+"RTR 160": "/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/Apache-Non-Branding/RTR-160-4v/Product_Display/Product_Display.webp",
+"RTR 160 ABS": "/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/Apache-Non-Branding/RTR-160-4v/Product_Display/Product_Display.webp",
+"RTR 200": "/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/apache-rtr-2004v-fi/web/home-listing/200-4v-fi-listing-nonbranding.webp",
+"RTR 200 ABS": "/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/apache-rtr-2004v-fi/web/home-listing/200-4v-fi-listing-nonbranding.webp",
+"RTR 200 EFI": "/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/apache-rtr-2004v-fi/web/home-listing/TVS-RTR-200-4V-FI-23-AZUL-3-800-600-1.webp",
+"RAIDER 125": "/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/Raider/web/home-listing/06_Product_Display.webp",
+"NTORQ 125": "/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/Ntorq-125/web/Color/ntorq-r125-red.webp",
+"NEO 110 FULL": "/ar/-/media/Feature/IB/Webp-Images/NewUI/Product/Non-premium/NEO-NX-cbs/Web/Colors/blue_rz.webp"
+},
+"spec": {
+"RTR 160": {
+"cc": "159,7",
+"hp": "16,3 HP",
+"nm": "14,8",
+"peso": "143",
+"tanque": "12",
+"caja": "5"
+},
+"RTR 200": {
+"cc": "197,75",
+"tanque": "12",
+"caja": "5",
+"hp": "20,2 HP",
+"peso": "149"
+},
+"RTR 200 EFI": {
+"cc": "197,75",
+"tanque": "12",
+"caja": "5",
+"extra": "3 modos de manejo, suspension SHOWA regulable",
+"hp": "20,5 HP",
+"peso": "152"
+},
+"RAIDER 125": {
+"cc": "124,8",
+"hp": "12,7 HP",
+"tanque": "10",
+"caja": "5",
+"peso": "120"
+},
+"NTORQ 125": {
+"cc": "124,8",
+"hp": "8,8 HP",
+"nm": "10,5",
+"peso": "116",
+"tanque": "5",
+"caja": "Automatica (CVT)"
+},
+"NEO 110 FULL": {
+"cc": "109,7",
+"hp": "9 HP",
+"nm": "8,5",
+"tanque": "4",
+"caja": "4 semiautomatica",
+"peso": "101,5"
+}
+}
+}
