@@ -7,67 +7,79 @@
 <meta name="description" content="Motos 0km de Kove, Suzuki, Benelli, Morbidelli, Keeway, SYM, Malaguti, Motomel, TVS e IKA. Entrega inmediata y financiación.">
 <meta property="og:title" content="Catálogo 0km · Megamoto Tigre">
 <meta property="og:description" content="Todas las marcas que trabajamos, con fichas técnicas. Consultá por WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Saira:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f4f2;--card:#fff;--ink:#16161a;--mut:#6b6b73;--line:#e4e4e0;--acc:#d6261c;--acc2:#b51e15;--wa:#1fa855}
+:root{--bg:#0a0e0b;--bg2:#0f1511;--surf:#141c17;--surf2:#18211b;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);--ink:#f1f4ef;--mut:#9aa69d;--mut2:#6f7b72;--lime:#d6f36f;--lime-ink:#0b1a10;--stage:linear-gradient(180deg,#f7f8f5 0%,#e9ebe6 100%);--wa:#25d366}
 *{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
-header{background:var(--ink);color:#fff;padding:22px 20px 18px}
-.wrap{max-width:1200px;margin:0 auto}
-.brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.brand b{font-size:24px;letter-spacing:.5px}
-.brand b span{color:var(--acc)}
-.brand small{color:#b9b9c0;font-size:14px}
-.hero{margin:8px 0 0;color:#d9d9de;font-size:15px;max-width:640px}
-.bar{position:sticky;top:0;z-index:5;background:rgba(244,244,242,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:12px 20px}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto}
+header{padding:26px 20px 22px;border-bottom:1px solid var(--line);background:radial-gradient(900px 300px at 10% -40%,rgba(214,243,111,.10),transparent 70%),var(--bg)}
+.brand{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.brand img{height:62px;width:auto;display:block}
+.brand .tx{display:flex;flex-direction:column;gap:2px}
+.brand b{font-family:Saira,Inter,sans-serif;font-size:15px;letter-spacing:3px;text-transform:uppercase;color:var(--lime);font-weight:600}
+.brand small{color:var(--mut);font-size:14px;letter-spacing:.3px}
+.hero{margin:16px 0 0;color:var(--ink);font-family:Saira,Inter,sans-serif;font-size:clamp(22px,3.2vw,34px);font-weight:600;line-height:1.15;max-width:760px}
+.hero span{color:var(--lime)}
+.sub{margin:8px 0 0;color:var(--mut);font-size:15px;max-width:640px}
+.bar{position:sticky;top:0;z-index:5;background:rgba(10,14,11,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 20px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .row+.row{margin-top:8px}
-input[type=search],select{font:inherit;font-size:15px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+input[type=search],select{font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line2);border-radius:10px;background:var(--surf);color:var(--ink);outline:none}
+input[type=search]:focus,select:focus{border-color:var(--lime)}
+input[type=search]::placeholder{color:var(--mut2)}
 input[type=search]{flex:1;min-width:180px}
 .chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer;color:var(--ink);white-space:nowrap}
-.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.count{color:var(--mut);font-size:14px;margin:14px 20px 0}
+.chip{flex:none;border:1px solid var(--line2);background:transparent;border-radius:999px;padding:6px 13px;font-family:Saira,Inter,sans-serif;font-size:14px;letter-spacing:.3px;cursor:pointer;color:var(--ink);white-space:nowrap;transition:border-color .15s}
+.chip:hover{border-color:var(--lime)}
+.chip.on{background:var(--lime);color:var(--lime-ink);border-color:var(--lime);font-weight:600}
+.count{color:var(--mut);font-size:14px;margin:16px 20px 0;font-family:Saira,Inter,sans-serif;letter-spacing:.5px}
 main{padding:10px 20px 40px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-.card{background:var(--card);border-radius:14px;overflow:hidden;border:1px solid var(--line);cursor:pointer;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
-.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
-.ph{aspect-ratio:4/3;background:#fafaf8;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card{background:var(--surf);border-radius:12px;overflow:hidden;border:1px solid var(--line);cursor:pointer;display:flex;flex-direction:column;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-2px);border-color:rgba(214,243,111,.45)}
+.ph{aspect-ratio:4/3;background:var(--stage);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .ph img{width:100%;height:100%;object-fit:contain;padding:8px}
-.ph .none{font-size:15px;color:var(--mut);text-align:center;padding:20px}
-.ph .none b{display:block;font-size:30px;color:#cfcfca;margin-bottom:4px}
+.ph .none{font-size:14px;color:#6f7b72;text-align:center;padding:20px}
+.ph .none b{display:block;font-family:Saira,Inter,sans-serif;font-size:28px;color:#c9ccc4;margin-bottom:4px}
 .info{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px;flex:1}
-.mk{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--acc);font-weight:600}
-.nm{font-size:18px;font-weight:650}
+.mk{font-family:Saira,Inter,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--lime);font-weight:600}
+.nm{font-family:Saira,Inter,sans-serif;font-size:19px;font-weight:600;line-height:1.2}
 .kv{font-size:13.5px;color:var(--mut)}
-.more{margin-top:auto;padding-top:8px;font-size:14px;color:var(--ink);font-weight:600}
+.more{margin-top:auto;padding-top:8px;font-size:14px;color:var(--ink);font-weight:500}
+.card:hover .more{color:var(--lime)}
 .empty{text-align:center;color:var(--mut);padding:50px 0}
-dialog{border:0;border-radius:18px;padding:0;max-width:760px;width:calc(100% - 24px);max-height:calc(100% - 24px)}
-dialog::backdrop{background:rgba(10,10,12,.55)}
+dialog{border:1px solid var(--line2);border-radius:16px;padding:0;max-width:780px;width:calc(100% - 24px);max-height:calc(100% - 24px);background:var(--bg2);color:var(--ink)}
+dialog::backdrop{background:rgba(0,0,0,.7)}
 .dl{display:grid;grid-template-columns:1fr 1fr}
-.dl .ph{aspect-ratio:auto;min-height:260px;height:100%}
+.dl .ph{aspect-ratio:auto;min-height:280px;height:100%}
 .dl .body{padding:22px 22px 18px}
-.x{position:absolute;top:10px;right:12px;border:0;background:#fff;border-radius:50%;width:36px;height:36px;font-size:22px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.x{position:absolute;top:10px;right:12px;border:0;background:var(--surf2);color:var(--ink);border-radius:50%;width:36px;height:36px;font-size:22px;cursor:pointer;z-index:2}
 table{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:14px}
-td{padding:6px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td{padding:7px 0;border-bottom:1px solid var(--line);vertical-align:top}
 td:first-child{color:var(--mut);width:42%;padding-right:10px}
-.ex{font-size:14px;margin:10px 0 0;line-height:1.45}
+.ex{font-size:14px;margin:10px 0 0;line-height:1.45;color:var(--ink)}
 .acts{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:10px;padding:11px 16px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none}
-.wa{background:var(--wa);color:#fff}
-.sec{background:#efefec;color:var(--ink)}
-.note{font-size:12px;color:var(--mut);margin-top:12px}
-footer{text-align:center;color:var(--mut);font-size:13px;padding:10px 20px 40px;line-height:1.6}
-.fab{position:fixed;right:16px;bottom:16px;z-index:6;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.2)}
-.toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 14px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:10px;padding:11px 16px;font-family:Saira,Inter,sans-serif;font-size:15px;font-weight:600;letter-spacing:.3px;cursor:pointer;text-decoration:none}
+.wa{background:var(--lime);color:var(--lime-ink)}
+.wa:hover{filter:brightness(1.05)}
+.sec{background:transparent;color:var(--ink);border:1px solid var(--line2)}
+.note{font-size:12px;color:var(--mut2);margin-top:12px}
+footer{text-align:center;color:var(--mut2);font-size:13px;padding:24px 20px 40px;line-height:1.6;border-top:1px solid var(--line)}
+footer img{height:34px;opacity:.85;margin-bottom:8px}
+.fab{position:fixed;right:16px;bottom:16px;z-index:6;border-radius:999px;box-shadow:0 6px 22px rgba(0,0,0,.45)}
+.toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--lime);color:var(--lime-ink);padding:9px 14px;border-radius:10px;font-size:14px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.on{opacity:1}
-@media (max-width:640px){.dl{grid-template-columns:1fr}.dl .ph{min-height:220px}.grid{grid-template-columns:repeat(2,1fr);gap:10px}.nm{font-size:16px}.info{padding:10px}.kv{font-size:12.5px}}
+@media (max-width:640px){.dl{grid-template-columns:1fr}.dl .ph{min-height:220px}.grid{grid-template-columns:repeat(2,1fr);gap:10px}.nm{font-size:16px}.info{padding:10px}.kv{font-size:12.5px}.brand img{height:48px}}
 </style>
 </head>
 <body>
 <header><div class="wrap">
-  <div class="brand"><b>MEGAMOTO <span>TIGRE</span></b><small>Concesionario oficial multimarca · 0km</small></div>
-  <p class="hero">Todas las motos que trabajamos, con su ficha técnica. Tocá la que te guste y consultanos precio, colores y financiación por WhatsApp.</p>
+  <div class="brand"><img src="img/logo-mgm.png" alt="Megamoto"><div class="tx"><b>Tigre</b><small>Concesionario oficial multimarca · 0km</small></div></div>
+  <p class="hero">Todas las motos que trabajamos, <span>en un solo lugar.</span></p>
+  <p class="sub">Tocá la que te guste para ver su ficha técnica y consultanos precio, colores y financiación por WhatsApp.</p>
 </div></header>
 
 <div class="bar"><div class="wrap">
@@ -89,11 +101,12 @@ footer{text-align:center;color:var(--mut);font-size:13px;padding:10px 20px 40px;
 <main><div class="wrap"><div class="grid" id="grid"></div><div class="empty" id="empty" hidden>No encontramos motos con esos filtros.</div></div></main>
 
 <footer><div class="wrap">
+  <img src="img/logo-mgm.png" alt="Megamoto"><br>
   Megamoto · Tigre, Buenos Aires · Entrega inmediata y opciones de financiación.<br>
   Fotos y datos técnicos tomados de los sitios oficiales de cada marca; pueden variar según versión y año. Consultá disponibilidad y colores.
 </div></footer>
 
-<a class="btn wa fab" id="fab" target="_blank" rel="noopener">WhatsApp</a>
+<a class="btn fab" style="background:var(--wa);color:#fff" id="fab" target="_blank" rel="noopener">WhatsApp</a>
 
 <dialog id="dlg"><button class="x" onclick="cerrar()" aria-label="Cerrar">×</button><div id="dlgc"></div></dialog>
 <div class="toast" id="toast"></div>
