@@ -1,7 +1,11 @@
-{"base":"https://cdn.sanity.io/images/bifk3rao/production/",
- "img":{"Slalom 110 BASE":"464d396f5fcbb071d856408f71a50169727ee5a1-1080x1080.png",
-  "Slalom 110 FULL":"464d396f5fcbb071d856408f71a50169727ee5a1-1080x1080.png",
-  "DURBAN 150":"e50c2bc7073864b9514fe4b852c04ee20821ef50-1080x1080.png",
-  "SPOT 150":"16fab106199ab35b38bca59a1ab28205bc1754be-1080x1080.png",
-  "SPOT 150 FULL":"16fab106199ab35b38bca59a1ab28205bc1754be-1080x1080.png"},
- "spec":{}}
+{
+"base": "https://cdn.sanity.io/images/bifk3rao/production/",
+"img": {
+"Slalom 110 BASE": "7821b1fdf337e0c7fde000298f163009b020f122-1920x930.png",
+"Slalom 110 FULL": "7821b1fdf337e0c7fde000298f163009b020f122-1920x930.png",
+"DURBAN 150": "1a278bac4baff45ae2d9d5ab7fbb640cff61dec2-1920x930.png",
+"SPOT 150": "b29eb0b930ad021c93fffb47c1955ee09f8d9f6a-1920x930.png",
+"SPOT 150 FULL": "b29eb0b930ad021c93fffb47c1955ee09f8d9f6a-1920x930.png"
+},
+"spec": {}
+}
