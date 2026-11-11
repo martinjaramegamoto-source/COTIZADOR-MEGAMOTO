@@ -153,6 +153,7 @@ LABELS = [('motor', 'Motor'), ('cc', 'Cilindrada'), ('hp', 'Potencia'), ('par', 
           ('asiento', 'Altura de asiento'), ('tanque', 'Tanque'), ('susp', 'Suspensión'), ('freno', 'Frenos'), ('seg', 'Seguridad'),
           ('llantas', 'Llantas'), ('vmax', 'Velocidad máxima')]
 
+PROPIA_PRIMERO = {'450RR (PISTA)', '350R NEW'}  # la oficial es chica
 motos, falt_img, vistos = [], [], set()
 for marca, mod in rows:
     if mod in vistos: continue
@@ -169,6 +170,7 @@ for marca, mod in rows:
     ficha = [[lab, str(sp[k])] for k, lab in LABELS if sp.get(k)]
     img = src['img']
     propia = f'img/{foto}.webp' if foto else ''
+    if mod in PROPIA_PRIMERO and propia: img, propia = propia, img
     if not img and not propia: falt_img.append(mod)
     motos.append(dict(id=re.sub(r'[^a-z0-9]+', '-', (marca + ' ' + nombre).lower()).strip('-'), marca=marca, nombre=nombre,
                       tipo=cat, cc=cc, img=img, img2=propia, ficha=ficha, extra=extra))
