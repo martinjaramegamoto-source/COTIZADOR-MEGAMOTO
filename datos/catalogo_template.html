@@ -74,6 +74,72 @@ footer img{height:34px;opacity:.85;margin-bottom:8px}
 .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--lime);color:var(--lime-ink);padding:9px 14px;border-radius:10px;font-size:14px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.on{opacity:1}
 @media (max-width:640px){.dl{grid-template-columns:1fr}.dl .ph{min-height:220px}.grid{grid-template-columns:repeat(2,1fr);gap:10px}.nm{font-size:16px}.info{padding:10px}.kv{font-size:12.5px}.brand img{height:48px}}
+
+/* ===== Animaciones ===== */
+:root{--out:cubic-bezier(.22,1,.36,1);--io:cubic-bezier(.65,0,.35,1);--spring:cubic-bezier(.34,1.56,.64,1)}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{to{opacity:0}}
+/* Entrada del encabezado, una sola vez */
+header .brand{animation:up .7s var(--out) backwards}
+header .hero{animation:up .7s var(--out) .08s backwards}
+header .sub{animation:up .7s var(--out) .16s backwards}
+.bar{animation:fade .6s ease .25s backwards}
+/* Chips y botones: respuesta al toque */
+.chip{transition:background-color .2s,color .2s,border-color .2s,transform .15s var(--out)}
+.chip:active{transform:scale(.94)}
+.btn{transition:transform .15s var(--out),filter .15s}
+.btn:active{transform:scale(.96)}
+/* Tarjetas: aparecen al bajar, escalonadas */
+.card{transition:opacity .5s var(--out),transform .55s var(--out),border-color .2s,box-shadow .3s;transition-delay:var(--d,0ms)}
+.card.rv{opacity:0;transform:translateY(22px)}
+.grid.fast .card{transition-duration:.2s,.25s,.2s,.3s}
+.grid.fast .card.rv{transform:translateY(6px)}
+.card:active{transform:scale(.98)}
+.ph img{opacity:0;transition:opacity .45s ease,transform .6s var(--out)}
+.ph img.ok{opacity:1}
+@media (hover:hover){
+  .card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(0,0,0,.4)}
+  .card:hover .ph img{transform:scale(1.05)}
+}
+.count.pop{animation:pop .3s var(--spring)}
+@keyframes pop{from{opacity:.4;transform:translateY(-3px)}to{opacity:1;transform:none}}
+.empty:not([hidden]){animation:up .4s var(--out)}
+/* Ficha: crece desde la moto que tocaste */
+dialog[open]{animation:dIn .42s var(--out)}
+dialog[open]::backdrop{animation:fade .3s ease}
+dialog.out{animation:dOut .24s var(--io) forwards}
+dialog.out::backdrop{animation:fadeOut .24s ease forwards}
+@keyframes dIn{from{opacity:0;transform:translate(var(--dx,0),var(--dy,0)) scale(.55)}to{opacity:1;transform:none}}
+@keyframes dOut{to{opacity:0;transform:scale(.94)}}
+dialog .dl .ph img{animation:zoomIn .7s var(--out) backwards}
+@keyframes zoomIn{from{transform:scale(1.08)}to{transform:none}}
+dialog .body>*{animation:up .45s var(--out) backwards}
+dialog .body>:nth-child(1){animation-delay:.08s}dialog .body>:nth-child(2){animation-delay:.12s}
+dialog .body>:nth-child(n+3){animation-delay:.16s}
+dialog tr{animation:fade .35s ease backwards;animation-delay:calc(180ms + min(var(--i,0),12) * 28ms)}
+dialog .acts{animation-delay:.3s!important}
+/* En el celu la ficha sube desde abajo, tipo app */
+@media (max-width:640px){
+  dialog{margin:auto auto 0;width:100%;max-width:100%;max-height:92%;border-radius:18px 18px 0 0;border-bottom:0}
+  dialog[open]{animation:sIn .45s var(--out)}
+  dialog.out{animation:sOut .26s var(--io) forwards}
+  @keyframes sIn{from{transform:translateY(100%)}to{transform:none}}
+  @keyframes sOut{to{transform:translateY(100%)}}
+}
+/* Botón de WhatsApp: entra y late dos veces, una sola vez */
+.fab{animation:fabIn .6s var(--spring) 1s backwards}
+.fab::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;animation:ring 1.6s ease-out 2.8s 2}
+@keyframes fabIn{from{opacity:0;transform:translateY(30px) scale(.6)}to{opacity:1;transform:none}}
+@keyframes ring{from{box-shadow:0 0 0 0 rgba(37,211,102,.65)}to{box-shadow:0 0 0 18px rgba(37,211,102,0)}}
+/* Aviso "Link copiado" con rebote */
+.toast{transform:translateX(-50%) translateY(14px) scale(.95);transition:opacity .2s,transform .35s var(--spring)}
+.toast.on{transform:translateX(-50%)}
+/* Si el dispositivo pide menos movimiento, todo se apaga */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .card.rv{opacity:1;transform:none}.ph img{opacity:1}
+}
 </style>
 </head>
 <body>
@@ -125,10 +191,14 @@ const val=(m,l)=>(m.ficha.find(f=>f[0]===l)||[,''])[1];
 function foto(m){
   if(!m.img&&!m.img2) return `<div class="none"><b>${esc(m.marca)}</b>Foto a confirmar</div>`;
   const first=m.img||m.img2, alt=m.img?m.img2:'';
-  return `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(first)}" alt="${esc(m.marca+' '+m.nombre)}" data-alt="${esc(alt)}" onerror="fb(this)">`;
+  return `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(first)}" alt="${esc(m.marca+' '+m.nombre)}" data-alt="${esc(alt)}" onload="this.classList.add('ok')" onerror="fb(this)">`;
 }
 function fb(im){const a=im.dataset.alt;if(a){im.dataset.alt='';im.src=a;}else{im.outerHTML='<div class="none"><b>'+esc(im.alt.split(' ')[0])+'</b>Foto a confirmar</div>';}}
 
+function marcar(){
+  document.querySelectorAll('#marcas .chip').forEach(b=>b.classList.toggle('on',b.dataset.m===st.marca));
+  document.querySelectorAll('#tipos .chip').forEach(b=>b.classList.toggle('on',b.dataset.t===st.tipo));
+}
 function chips(){
   $('#marcas').innerHTML=['',...MARCAS].map(m=>`<button class="chip${st.marca===m?' on':''}" data-m="${esc(m)}">${m||'Todas las marcas'}</button>`).join('');
   const usados=new Set(MOTOS.map(m=>m.tipo));
@@ -140,15 +210,37 @@ function filtra(){
   return MOTOS.filter(m=>(!st.marca||m.marca===st.marca)&&(!st.tipo||m.tipo===st.tipo)&&(!st.cc||(m.cc>=a&&m.cc<=b))
     &&(!q||(m.marca+m.nombre).toLowerCase().replace(/[-\s]/g,'').includes(q)));
 }
+const REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let primera=true, io=null;
+function revelar(){
+  const cards=[...document.querySelectorAll('#grid .card')];
+  if(REDUCE||!('IntersectionObserver' in window)){return;}
+  const fast=!primera;
+  $('#grid').classList.toggle('fast',fast);
+  cards.forEach(c=>c.classList.add('rv'));
+  if(io)io.disconnect();
+  io=new IntersectionObserver(es=>{
+    es.filter(e=>e.isIntersecting).forEach((e,i)=>{
+      const c=e.target,d=fast?Math.min(i,10)*18:Math.min(i,8)*60;
+      c.style.setProperty('--d',d+'ms');
+      requestAnimationFrame(()=>c.classList.remove('rv'));
+      setTimeout(()=>c.style.setProperty('--d','0ms'),d+600);
+      io.unobserve(c);
+    });
+  },{rootMargin:'0px 0px -30px 0px'});
+  cards.forEach(c=>io.observe(c));
+}
 function render(){
-  chips();
+  marcar();
   const L=filtra();
-  $('#count').textContent=L.length+(L.length===1?' modelo':' modelos');
+  const txt=L.length+(L.length===1?' modelo':' modelos'), ce=$('#count');
+  if(ce.textContent!==txt){ce.textContent=txt;if(!primera){ce.classList.remove('pop');void ce.offsetWidth;ce.classList.add('pop');}}
   $('#empty').hidden=L.length>0;
   $('#grid').innerHTML=L.map(m=>{
     const kv=[val(m,'Cilindrada'),val(m,'Potencia'),tipoNom(m.tipo)].filter(Boolean).join(' · ');
     return `<article class="card" data-id="${m.id}"><div class="ph">${foto(m)}</div><div class="info"><div class="mk">${esc(m.marca)}</div><div class="nm">${esc(m.nombre)}</div><div class="kv">${esc(kv)}</div><div class="more">Ver ficha →</div></div></article>`;
   }).join('');
+  revelar();primera=false;
   url();
   $('#fab').href=waLink('Hola Martin! Vi el catalogo de Megamoto y queria consultar por una moto.');
 }
@@ -157,9 +249,9 @@ function url(id){
   if(st.marca)p.set('marca',st.marca);if(st.tipo)p.set('tipo',st.tipo);if(st.cc)p.set('cc',st.cc);if(st.q)p.set('q',st.q);if(id)p.set('moto',id);
   const s=p.toString();history.replaceState(null,'',location.pathname+(s?'?'+s:''));
 }
-function abrir(id){
+function abrir(id,desde){
   const m=MOTOS.find(x=>x.id===id);if(!m)return;
-  const rows=m.ficha.map(f=>`<tr><td>${esc(f[0])}</td><td>${esc(f[1])}</td></tr>`).join('');
+  const rows=m.ficha.map((f,i)=>`<tr style="--i:${i}"><td>${esc(f[0])}</td><td>${esc(f[1])}</td></tr>`).join('');
   $('#dlgc').innerHTML=`<div class="dl"><div class="ph">${foto(m)}</div><div class="body">
     <div class="mk">${esc(m.marca)} · ${esc(tipoNom(m.tipo))}</div><div class="nm" style="font-size:24px">${esc(m.nombre)}</div>
     ${rows?`<table>${rows}</table>`:'<p class="ex">Pedinos la ficha técnica completa por WhatsApp.</p>'}
@@ -168,9 +260,20 @@ function abrir(id){
     <button class="btn sec" onclick="compartir('${m.id}')">Compartir</button></div>
     <div class="note">Datos de fábrica orientativos. Consultá colores y disponibilidad.</div></div></div>`;
   url(id);
-  if(!$('#dlg').open)$('#dlg').showModal();
+  const d=$('#dlg');
+  if(desde){const r=desde.getBoundingClientRect();
+    d.style.setProperty('--dx',Math.round(r.left+r.width/2-innerWidth/2)+'px');
+    d.style.setProperty('--dy',Math.round(r.top+r.height/2-innerHeight/2)+'px');}
+  else{d.style.setProperty('--dx','0px');d.style.setProperty('--dy','0px');}
+  if(!d.open)d.showModal();
 }
-function cerrar(){$('#dlg').close();}
+function cerrar(){
+  const d=$('#dlg');if(!d.open||d.classList.contains('out'))return;
+  if(REDUCE){d.close();return;}
+  d.classList.add('out');
+  setTimeout(()=>{d.classList.remove('out');d.close();},250);
+}
+$('#dlg').addEventListener('cancel',e=>{e.preventDefault();cerrar();});
 $('#dlg').addEventListener('close',()=>url());
 $('#dlg').addEventListener('click',e=>{if(e.target.id==='dlg')cerrar();});
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1800);}
@@ -183,13 +286,13 @@ $('#marcas').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b
 $('#tipos').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b){st.tipo=b.dataset.t;render();}});
 $('#cc').addEventListener('change',e=>{st.cc=e.target.value;render();});
 $('#q').addEventListener('input',e=>{st.q=e.target.value;render();});
-$('#grid').addEventListener('click',e=>{const c=e.target.closest('.card');if(c)abrir(c.dataset.id);});
+$('#grid').addEventListener('click',e=>{const c=e.target.closest('.card');if(c)abrir(c.dataset.id,c);});
 
 const P=new URLSearchParams(location.search);
 st.marca=MARCAS.find(m=>m.toLowerCase()===(P.get('marca')||'').toLowerCase())||'';
 st.tipo=P.get('tipo')||'';st.cc=P.get('cc')||'';st.q=P.get('q')||'';
 $('#cc').value=st.cc;$('#q').value=st.q;
-render();
+chips();render();
 if(P.get('moto'))abrir(P.get('moto'));
 </script>
 </body>
