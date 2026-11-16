@@ -147,7 +147,7 @@ DET = {
 # ---------- tipo legible ----------
 TIPOS = [('calle110', 'Urbanas 110'), ('calle', 'Calle / naked'), ('scooter', 'Scooters'), ('aventura', 'Aventura / trail'),
          ('enduro', 'Enduro / cross'), ('deportiva', 'Deportivas'), ('custom', 'Custom')]
-CORR = {'DURBAN 150': 'enduro', 'NEO 110 FULL': 'calle110'}  # correcciones de categoría
+CORR = {'DURBAN 150': 'enduro', 'NEO 110 FULL': 'calle110', 'MODENA 150': 'calle', 'MODENA 300': 'calle', 'OLTRE 150': 'aventura', 'TROVARE 475': 'aventura'}  # correcciones de categoría
 
 LABELS = [('motor', 'Motor'), ('cc', 'Cilindrada'), ('hp', 'Potencia'), ('par', 'Torque'), ('caja', 'Transmisión'), ('peso', 'Peso'),
           ('asiento', 'Altura de asiento'), ('tanque', 'Tanque'), ('susp', 'Suspensión'), ('freno', 'Frenos'), ('seg', 'Seguridad'),
